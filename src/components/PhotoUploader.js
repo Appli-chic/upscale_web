@@ -9,6 +9,7 @@ function PhotoUploader() {
   const [isLoading, setIsLoading] = useState(false);
   const [inputMethod, setInputMethod] = useState('file'); // 'file' or 'url'
   const [sliderPosition, setSliderPosition] = useState(50); // Default to middle (50%)
+  const [errorMessage, setErrorMessage] = useState('');
   const fileInputRef = useRef(null);
   const sliderRef = useRef(null);
   const containerRef = useRef(null);
@@ -38,6 +39,7 @@ function PhotoUploader() {
   const upscaleImage = async (imageFile) => {
     try {
       setIsLoading(true);
+      setErrorMessage(''); // Clear any existing error message
 
       const formData = new FormData();
       formData.append('file', imageFile);
@@ -56,7 +58,7 @@ function PhotoUploader() {
       setUpscaledImage(upscaledUrl);
     } catch (error) {
       console.error('Error upscaling image:', error);
-      alert('Failed to upscale image. Please try again.');
+      setErrorMessage('Le serveur fonctionne seulement le vendredi aux heures de travail.');
     } finally {
       setIsLoading(false);
     }
@@ -66,6 +68,7 @@ function PhotoUploader() {
   const upscaleImageUrl = async (url) => {
     try {
       setIsLoading(true);
+      setErrorMessage(''); // Clear any existing error message
 
       const response = await fetch('http://localhost:5000/upscale_url', {
         method: 'POST',
@@ -84,7 +87,7 @@ function PhotoUploader() {
       setUpscaledImage(upscaledUrl);
     } catch (error) {
       console.error('Error upscaling image from URL:', error);
-      alert('Failed to upscale image from URL. Please try again.');
+      setErrorMessage('Le serveur fonctionne seulement le vendredi aux heures de travail.');
     } finally {
       setIsLoading(false);
     }
@@ -219,13 +222,28 @@ function PhotoUploader() {
         )}
       </form>
 
+      {errorMessage && (
+        <div className="error-message">
+          <p>{errorMessage}</p>
+        </div>
+      )}
+
       {isLoading && (
         <div className="loading">
+          <div className="loading-animation">
+            <div className="photo-icon">
+              <div className="photo-icon-frame">
+                <div className="photo-icon-inner"></div>
+                <div className="photo-icon-mountain"></div>
+                <div className="photo-icon-sun"></div>
+              </div>
+            </div>
+          </div>
           <p>Upscaling image... Please wait.</p>
         </div>
       )}
 
-      {displayImage && upscaledImage && (
+      {displayImage && upscaledImage && !isLoading && (
         <div className="image-comparison-container">
           <h3>Image Comparison</h3>
           <div 

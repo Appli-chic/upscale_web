@@ -82,6 +82,24 @@ input[type="file"] {
   background-color: #3367d6;
 }
 
+/* Error message styles */
+.error-message {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #ffebee;
+  border: 1px solid #ef5350;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(239, 83, 80, 0.2);
+  text-align: center;
+}
+
+.error-message p {
+  color: #d32f2f;
+  font-weight: bold;
+  margin: 0;
+  font-size: 16px;
+}
+
 .image-preview {
   margin-top: 20px;
   text-align: center;
@@ -253,15 +271,86 @@ input[type="file"] {
 /* Loading indicator styles */
 .loading {
   margin: 20px 0;
-  padding: 15px;
+  padding: 20px;
   text-align: center;
-  background-color: #fff3e0;
+  background-color: #e3f2fd;
   border-radius: 8px;
-  border: 1px solid #ffe0b2;
+  border: 1px solid #bbdefb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .loading p {
-  color: #e65100;
+  color: #1565c0;
   font-weight: bold;
-  margin: 0;
+  margin: 10px 0 0;
+}
+
+.loading-animation {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.photo-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.photo-icon-frame {
+  width: 60px;
+  height: 45px;
+  border: 3px solid #1565c0;
+  border-radius: 8px;
+  background-color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  image-rendering: pixelated;
+}
+
+.photo-icon-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, #bbdefb 0%, #e3f2fd 100%);
+}
+
+.photo-icon-mountain {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(to bottom, #1976d2 0%, #1565c0 100%);
+  clip-path: polygon(0% 100%, 30% 40%, 45% 60%, 60% 30%, 80% 50%, 100% 20%, 100% 100%);
+}
+
+.photo-icon-sun {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle, #FFC107 60%, #FF9800 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.6);
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translate(-50%, -50%) translateY(0) scale(0.9);
+    filter: contrast(0.8);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-20px) scale(1);
+    filter: contrast(1.2);
+  }
 }
