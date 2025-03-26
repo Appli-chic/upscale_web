@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './PhotoUploader.css';
 
 function PhotoUploader() {
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('https://www.happybrainscience.com/wp-content/uploads/2017/07/derwent-morning-Cropped.jpg');
   const [uploadedImage, setUploadedImage] = useState(null);
   const [displayImage, setDisplayImage] = useState('');
   const [upscaledImage, setUpscaledImage] = useState('');
@@ -22,6 +22,17 @@ function PhotoUploader() {
       setSliderPosition(50);
     }
   }, [displayImage, upscaledImage]);
+
+  // Handle image load to adjust container height
+  const handleImageLoad = (e) => {
+    if (containerRef.current && e.target.naturalHeight && e.target.naturalWidth) {
+      // Set container height based on image aspect ratio
+      const aspectRatio = e.target.naturalWidth / e.target.naturalHeight;
+      const containerWidth = containerRef.current.offsetWidth;
+      const newHeight = containerWidth / aspectRatio;
+      containerRef.current.style.height = `${newHeight}px`;
+    }
+  };
 
   // Send image to upscale API
   const upscaleImage = async (imageFile) => {
@@ -109,10 +120,9 @@ function PhotoUploader() {
 
   // Handle Upload from PC button click
   const handleUploadFromPC = () => {
-    setInputMethod('file');
-    // Trigger file input click programmatically
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+    // Only trigger file input click if not already in file mode
+    if (inputMethod !== 'file') {
+      setInputMethod('file');
     }
   };
 
@@ -166,8 +176,6 @@ function PhotoUploader() {
 
   return (
     <div className="photo-uploader">
-      <h2>Photo Uploader</h2>
-
       <div className="input-method-selector">
         <button 
           className={inputMethod === 'file' ? 'active' : ''} 
@@ -232,6 +240,7 @@ function PhotoUploader() {
                 src={upscaledImage} 
                 alt="Upscaled" 
                 ref={upscaledImageRef}
+                onLoad={handleImageLoad}
               />
             </div>
             <div 
@@ -242,6 +251,7 @@ function PhotoUploader() {
                 src={displayImage} 
                 alt="Original" 
                 ref={originalImageRef}
+                onLoad={handleImageLoad}
               />
             </div>
             <div 
